@@ -1,9 +1,8 @@
 
 package javaapplication9;
 
-public class JavaApplication9 {
-
+public class NewClass {
     public static void main(String[] args) {
-        System.out.println("Testing");
+        System.out.println("asdadsa");
     }
 }
