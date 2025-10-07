@@ -1,5 +1,5 @@
 
-package javaapplication9;
+package Javapackage;
 
 public class JavaApplication9 {
 
