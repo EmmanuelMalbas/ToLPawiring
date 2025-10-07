@@ -1,5 +1,5 @@
 # ToLPawiring
-Project TesDa
+A Tesda Training - Java Programming Project
 
 #
 <!-- Creation of the TolPaWaring APP for the Car Servicing App  -->
