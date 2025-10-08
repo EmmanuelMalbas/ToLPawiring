@@ -16,11 +16,14 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+
 /**
  *
  * @author Kelly
  */
 public class CustomerAccountsFrame extends javax.swing.JFrame {
+    private javax.swing.JTextField searchField;
+    private javax.swing.JButton searchButton;
     
     public CustomerAccountsFrame() {
         initComponents();
@@ -35,9 +38,27 @@ public class CustomerAccountsFrame extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
         jTable1.getColumnModel().getColumn(0).setWidth(0);
         
+       searchField = new javax.swing.JTextField();
+       searchField.setFont(new java.awt.Font("Arial", 0, 14)); 
+       getContentPane().add(searchField, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 300, 40));
+    
+        searchButton = new javax.swing.JButton("Search");
+        searchButton.setFont(new java.awt.Font("Arial", 1, 14));  
+        searchButton.setBackground(new java.awt.Color(0, 102, 255));
+        searchButton.setForeground(Color.WHITE);
+        
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            searchButtonActionPerformed(evt);
+        }
+    });
+    getContentPane().add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 70, 100, 40)); 
     }
     
-    private void loadCustomerData() {
+private void loadCustomerData() {
+    loadCustomerData("");
+}
+private void loadCustomerData(String searchTerm) {
     String URL = "jdbc:mysql://localhost:3306/asc_db";
     String USER = "root";
     String PASS = "";
@@ -45,13 +66,23 @@ public class CustomerAccountsFrame extends javax.swing.JFrame {
     try {
         Class.forName("com.mysql.jdbc.Driver");
         Connection connect = (Connection) DriverManager.getConnection(URL, USER, PASS);
-        Statement statement = connect.createStatement();
-        String query = "SELECT customer_id, complete_name, email_address, account_created FROM customers";
 
-        ResultSet result = statement.executeQuery(query);
+        String query = "SELECT customer_id, complete_name, email_address, account_created FROM customers";
+        PreparedStatement pst;
+
+        if (!searchTerm.isEmpty()) {
+            query += " WHERE complete_name LIKE ? OR email_address LIKE ?";
+            pst = connect.prepareStatement(query);
+            pst.setString(1, "%" + searchTerm + "%");
+            pst.setString(2, "%" + searchTerm + "%");
+        } else {
+            pst = connect.prepareStatement(query);
+        }
+
+        ResultSet result = pst.executeQuery();
 
         DefaultTableModel tblModel = (DefaultTableModel) jTable1.getModel();
-        tblModel.setRowCount(0); 
+        tblModel.setRowCount(0); // clear previous rows
 
         while (result.next()) {
             int id = result.getInt("customer_id");
@@ -59,19 +90,30 @@ public class CustomerAccountsFrame extends javax.swing.JFrame {
             String email = result.getString("email_address");
             String accountCreated = result.getString("account_created");
 
-            Object[] tbData = {String.valueOf(id), name, email, accountCreated, "Delete"};
-            tblModel.addRow(tbData);
+            Object[] rowData = {String.valueOf(id), name, email, accountCreated, "Delete"};
+            tblModel.addRow(rowData);
         }
+
         result.close();
-        statement.close();
+        pst.close();
         connect.close();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
         e.printStackTrace();
         JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage());
     }
 }
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    String searchTerm = searchField.getText().trim();
+    loadCustomerData(searchTerm);
+     System.out.println("Search Term: " + searchTerm);
     
+    if (searchTerm.isEmpty()) {
+        loadCustomerData();
+    } else {
+        loadCustomerData(searchTerm);
+    }
+}
 class ButtonRenderer extends JButton implements TableCellRenderer {
 
     public ButtonRenderer() {
@@ -217,6 +259,9 @@ private void addDeleteButtonToTable() {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -229,13 +274,35 @@ private void addDeleteButtonToTable() {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 255));
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Customer Accounts");
-        jPanel1.add(jLabel1, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 0, 939, 110));
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Search:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, -1, 30));
+
+        jTextField1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 150, -1));
+
+        jButton1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jButton1.setText("Search");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 980, 110));
 
@@ -279,6 +346,15 @@ private void addDeleteButtonToTable() {
        loadCustomerData();
     }//GEN-LAST:event_formWindowOpened
 
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String searchTerm = jTextField1.getText().trim();
+        loadCustomerData(searchTerm); 
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -315,9 +391,12 @@ private void addDeleteButtonToTable() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
