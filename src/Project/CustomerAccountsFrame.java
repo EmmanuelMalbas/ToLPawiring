@@ -1,0 +1,402 @@
+package Project;
+import com.mysql.jdbc.Connection;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+
+/**
+ *
+ * @author Kelly
+ */
+public class CustomerAccountsFrame extends javax.swing.JFrame {
+    private javax.swing.JTextField searchField;
+    private javax.swing.JButton searchButton;
+    
+    public CustomerAccountsFrame() {
+        initComponents();
+        loadCustomerData();
+        addDeleteButtonToTable();
+
+        this.setTitle("Tol Pawiring");
+        this.setResizable(false);
+        jTable1.setRowHeight(35);
+        
+        jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(0).setWidth(0);
+        
+       searchField = new javax.swing.JTextField();
+       searchField.setFont(new java.awt.Font("Arial", 0, 14)); 
+       getContentPane().add(searchField, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 300, 40));
+    
+        searchButton = new javax.swing.JButton("Search");
+        searchButton.setFont(new java.awt.Font("Arial", 1, 14));  
+        searchButton.setBackground(new java.awt.Color(0, 102, 255));
+        searchButton.setForeground(Color.WHITE);
+        
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            searchButtonActionPerformed(evt);
+        }
+    });
+    getContentPane().add(searchButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 70, 100, 40)); 
+    }
+    
+private void loadCustomerData() {
+    loadCustomerData("");
+}
+private void loadCustomerData(String searchTerm) {
+    String URL = "jdbc:mysql://localhost:3306/asc_db";
+    String USER = "root";
+    String PASS = "";
+
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connect = (Connection) DriverManager.getConnection(URL, USER, PASS);
+
+        String query = "SELECT customer_id, complete_name, email_address, account_created FROM customers";
+        PreparedStatement pst;
+
+        if (!searchTerm.isEmpty()) {
+            query += " WHERE complete_name LIKE ? OR email_address LIKE ?";
+            pst = connect.prepareStatement(query);
+            pst.setString(1, "%" + searchTerm + "%");
+            pst.setString(2, "%" + searchTerm + "%");
+        } else {
+            pst = connect.prepareStatement(query);
+        }
+
+        ResultSet result = pst.executeQuery();
+
+        DefaultTableModel tblModel = (DefaultTableModel) jTable1.getModel();
+        tblModel.setRowCount(0); // clear previous rows
+
+        while (result.next()) {
+            int id = result.getInt("customer_id");
+            String name = result.getString("complete_name");
+            String email = result.getString("email_address");
+            String accountCreated = result.getString("account_created");
+
+            Object[] rowData = {String.valueOf(id), name, email, accountCreated, "Delete"};
+            tblModel.addRow(rowData);
+        }
+
+        result.close();
+        pst.close();
+        connect.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage());
+    }
+}
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    String searchTerm = searchField.getText().trim();
+    loadCustomerData(searchTerm);
+     System.out.println("Search Term: " + searchTerm);
+    
+    if (searchTerm.isEmpty()) {
+        loadCustomerData();
+    } else {
+        loadCustomerData(searchTerm);
+    }
+}
+class ButtonRenderer extends JButton implements TableCellRenderer {
+
+    public ButtonRenderer() {
+        setOpaque(true);
+    }
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
+        setText((value == null) ? "Delete" : value.toString());
+        return this;
+    }
+}
+
+class ButtonEditor extends DefaultCellEditor {
+    private final JButton button;
+    private int editingRow = -1;
+    private JTable table;
+    private boolean clicked = false;
+
+    public ButtonEditor(JCheckBox checkBox) {
+        super(checkBox);
+        button = new JButton("Delete");
+        button.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        button.setBackground(Color.RED);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        
+        button.addActionListener(e -> {
+            SwingUtilities.invokeLater(() -> {
+                  clicked = true;
+                   fireEditingStopped();
+            });
+        });
+    }
+
+    @Override
+    public Component getTableCellEditorComponent (JTable table, Object value, boolean isSelected, int row, int column) {
+        this.table = table;
+        this.editingRow = row;
+        this.clicked = false;
+        button.setText(value == null ? "Delete" : value.toString());
+        return button;
+    }
+
+    @Override
+    public Object getCellEditorValue() {
+        if(!clicked) {
+            return null;
+        }
+        
+        int modelRow = table.convertRowIndexToModel(editingRow);
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        
+        if(modelRow < 0  || modelRow >= model.getRowCount()) {
+            clicked = false;
+            return null;
+        }
+        
+        Object idObject = model.getValueAt(modelRow, 0);
+        int id;
+        
+         try {
+            id = Integer.parseInt(String.valueOf(idObject));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Invalid record id: " + idObject);
+            clicked = false;
+            return null;
+        }
+         
+       SwingUtilities.invokeLater(() -> {
+        if (table.isEditing()) {
+            table.getCellEditor().stopCellEditing();
+        }
+
+         int confirm = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to delete this record?",
+                "Confirm Delete",
+                JOptionPane.YES_NO_OPTION);
+         
+         if(confirm  == JOptionPane.YES_OPTION) {
+             deleteFromDatabase(id);
+             
+               if (modelRow >= 0 && modelRow < model.getRowCount()) {
+                model.removeRow(modelRow);
+            }
+   
+             JOptionPane.showMessageDialog(null, "Record deleted successfully!");
+         }
+        clicked = false;
+        editingRow = -1;
+       
+    });
+        return null;
+    }
+    @Override
+    public boolean stopCellEditing() {
+        clicked = false;
+        return super.stopCellEditing();
+    }
+
+   private void deleteFromDatabase(int id) {
+    String URL = "jdbc:mysql://localhost:3306/asc_db";
+    String USER = "root";
+    String PASS = "";
+    String query = "DELETE FROM customers WHERE customer_id=?";
+
+    try (Connection connect = (Connection) DriverManager.getConnection(URL, USER, PASS);
+         PreparedStatement statement = connect.prepareStatement(query)) {
+
+        statement.setInt(1, id);
+        int affected = statement.executeUpdate();
+
+        if (affected > 0) {
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "No record found with ID: " + id,
+                    "Delete Failed",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null,
+                "Error deleting record: " + e.getMessage(),
+                "Database Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+}
+private void addDeleteButtonToTable() {
+    jTable1.getColumn("Action").setCellRenderer(new ButtonRenderer());
+    jTable1.getColumn("Action").setCellEditor(new ButtonEditor(new JCheckBox()));
+
+    jTable1.getColumn("Action").setMinWidth(40);
+    jTable1.getColumn("Action").setPreferredWidth(40);
+}
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(0, 102, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Customer Accounts");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 0, 939, 110));
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Search:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, -1, 30));
+
+        jTextField1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 150, -1));
+
+        jButton1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        jButton1.setText("Search");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, -1, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 980, 110));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Complete Name", "Email Address", "Account Created", "Action"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.setColumnSelectionAllowed(true);
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTable1FocusGained(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 980, 470));
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jTable1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable1FocusGained
+
+    }//GEN-LAST:event_jTable1FocusGained
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+       loadCustomerData();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String searchTerm = jTextField1.getText().trim();
+        loadCustomerData(searchTerm); 
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(CustomerAccountsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(CustomerAccountsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(CustomerAccountsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(CustomerAccountsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new CustomerAccountsFrame().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    // End of variables declaration//GEN-END:variables
+}
