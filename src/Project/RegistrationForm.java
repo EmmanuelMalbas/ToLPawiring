@@ -5,14 +5,21 @@
  */
 package Project;
 
+
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  *
  * @author EJ
  */
 public class RegistrationForm extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form RegistrationForm
      */
@@ -36,19 +43,26 @@ public class RegistrationForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
-        jTextField2 = new javax.swing.JTextField();
+        tf_flname = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        jPanel12 = new javax.swing.JPanel();
+        tf_email1 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        tf_user = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
-        jTextField4 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        passf = new javax.swing.JPasswordField();
+        jPanel13 = new javax.swing.JPanel();
+        cbpass1 = new javax.swing.JCheckBox();
         jPanel8 = new javax.swing.JPanel();
-        jTextField3 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        repassf = new javax.swing.JPasswordField();
+        jPanel15 = new javax.swing.JPanel();
+        cbrepass = new javax.swing.JCheckBox();
         jPanel11 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
+        btnSignup = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -61,7 +75,7 @@ public class RegistrationForm extends javax.swing.JFrame {
 
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 0));
 
-        jPanel4.setPreferredSize(new java.awt.Dimension(400, 100));
+        jPanel4.setPreferredSize(new java.awt.Dimension(400, 40));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("REGISTER");
@@ -71,48 +85,60 @@ public class RegistrationForm extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(153, 153, 153)
+                .addGap(150, 150, 150)
                 .addComponent(jLabel1)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addContainerGap(166, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(49, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(26, 26, 26))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel4);
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(400, 230));
+        jPanel3.setPreferredSize(new java.awt.Dimension(400, 320));
 
         jPanel7.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel7.setLayout(new java.awt.BorderLayout(4, 4));
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        tf_flname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                tf_flnameActionPerformed(evt);
             }
         });
-        jPanel7.add(jTextField2, java.awt.BorderLayout.CENTER);
+        jPanel7.add(tf_flname, java.awt.BorderLayout.CENTER);
 
         jLabel3.setText("Fullname");
         jPanel7.add(jLabel3, java.awt.BorderLayout.PAGE_START);
 
         jPanel3.add(jPanel7);
 
+        jPanel12.setPreferredSize(new java.awt.Dimension(300, 50));
+        jPanel12.setLayout(new java.awt.BorderLayout(4, 4));
+
+        tf_email1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_email1ActionPerformed(evt);
+            }
+        });
+        jPanel12.add(tf_email1, java.awt.BorderLayout.CENTER);
+
+        jLabel8.setText("Email");
+        jPanel12.add(jLabel8, java.awt.BorderLayout.PAGE_START);
+
+        jPanel3.add(jPanel12);
+
         jPanel6.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel6.setLayout(new java.awt.BorderLayout(4, 4));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        tf_user.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                tf_userActionPerformed(evt);
             }
         });
-        jPanel6.add(jTextField1, java.awt.BorderLayout.CENTER);
+        jPanel6.add(tf_user, java.awt.BorderLayout.CENTER);
 
-        jLabel2.setText("Email");
+        jLabel2.setText("Username");
         jPanel6.add(jLabel2, java.awt.BorderLayout.PAGE_START);
 
         jPanel3.add(jPanel6);
@@ -120,52 +146,77 @@ public class RegistrationForm extends javax.swing.JFrame {
         jPanel10.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel10.setLayout(new java.awt.BorderLayout(4, 4));
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
-        jPanel10.add(jTextField4, java.awt.BorderLayout.CENTER);
-
         jLabel5.setText("Password");
         jPanel10.add(jLabel5, java.awt.BorderLayout.PAGE_START);
+        jPanel10.add(passf, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel10);
+
+        jPanel13.setPreferredSize(new java.awt.Dimension(400, 14));
+        jPanel13.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 50, -2));
+
+        cbpass1.setText("Show Password");
+        cbpass1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        cbpass1.setPreferredSize(new java.awt.Dimension(121, 30));
+        cbpass1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        cbpass1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbpass1ActionPerformed(evt);
+            }
+        });
+        jPanel13.add(cbpass1);
+
+        jPanel3.add(jPanel13);
 
         jPanel8.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel8.setLayout(new java.awt.BorderLayout(4, 4));
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-        jPanel8.add(jTextField3, java.awt.BorderLayout.CENTER);
-
         jLabel4.setText("Confirm Password");
         jPanel8.add(jLabel4, java.awt.BorderLayout.PAGE_START);
+        jPanel8.add(repassf, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel8);
 
-        jPanel1.add(jPanel3);
+        jPanel15.setPreferredSize(new java.awt.Dimension(400, 14));
+        jPanel15.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 50, -2));
 
-        jPanel11.setPreferredSize(new java.awt.Dimension(400, 50));
-
-        jButton4.setText("Signup");
-        jButton4.setPreferredSize(new java.awt.Dimension(250, 30));
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        cbrepass.setText("Show Password");
+        cbrepass.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        cbrepass.setPreferredSize(new java.awt.Dimension(121, 30));
+        cbrepass.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        cbrepass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                cbrepassActionPerformed(evt);
             }
         });
-        jPanel11.add(jButton4);
+        jPanel15.add(cbrepass);
+
+        jPanel3.add(jPanel15);
+
+        jPanel1.add(jPanel3);
+
+        jPanel11.setPreferredSize(new java.awt.Dimension(400, 40));
+
+        btnSignup.setText("Signup");
+        btnSignup.setPreferredSize(new java.awt.Dimension(250, 30));
+        btnSignup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSignupActionPerformed(evt);
+            }
+        });
+        jPanel11.add(btnSignup);
 
         jPanel1.add(jPanel11);
 
         jPanel9.setPreferredSize(new java.awt.Dimension(400, 50));
 
         jLabel6.setForeground(new java.awt.Color(0, 153, 255));
-        jLabel6.setText("Already have an Account?");
+        jLabel6.setText("Already have an Account? Click Here");
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
         jPanel9.add(jLabel6);
 
         jPanel1.add(jPanel9);
@@ -184,7 +235,7 @@ public class RegistrationForm extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(jLabel7)
-                .addContainerGap(385, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,30 +244,158 @@ public class RegistrationForm extends javax.swing.JFrame {
                 .addGap(0, 28, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 0, 885, 458));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 0, 520, 458));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void tf_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_userActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_tf_userActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void tf_flnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_flnameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_tf_flnameActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed
+        
+            // TODO add your handling code here:
+            
+            String flname = tf_flname.getText();
+            String uname = tf_user.getText();
+            String email = tf_email1.getText();
+            String pass = String.valueOf(passf.getPassword());
+            String re_pass = String.valueOf(repassf.getPassword());
+            
+            String hashedPass = hashPassword(pass);
+            
+            String role = "user"; // Default role for all new users
+            
+            
+            if(uname.equals("")){
+                JOptionPane.showMessageDialog(null, "Add Username");
+            }
+            else if(flname.equals("")){
+                JOptionPane.showMessageDialog(null, "Add your Full Name");
+            }
+            else if(email.equals("")){
+                JOptionPane.showMessageDialog(null, "Add an Email");
+                }
+            else if(pass.equals("")){
+                JOptionPane.showMessageDialog(null, "Add a Password");
+            }
+            else if (!pass.equals(re_pass)){
+                JOptionPane.showMessageDialog(null, "Re-type the Password");
+            }
+            else if(checkUsername(uname))
+            {
+            JOptionPane.showMessageDialog(null, "This Username Already Exist");
+            }
+            
+            else{
+                
+            PreparedStatement ps;
+            String query;
+            query = "INSERT INTO tbl_users(flname, email, username, password, role) VALUES (?,?,?,?,?)";
+            
+        try {    
+            ps = DBConnect.getConnection().prepareStatement(query);
+            
+            ps.setString(1,flname);
+            ps.setString(2,email);
+            ps.setString(3,uname);
+            ps.setString(4,hashedPass);
+            ps.setString(5,role);
+            
+            if(ps.executeUpdate() > 0){
+                JOptionPane.showMessageDialog(null,"New User Added");
+                
+                tf_flname.setText("");
+                tf_email1.setText("");
+                tf_user.setText("");
+                passf.setText("");
+                repassf.setText("");
+            }
+            
+        } catch (SQLException ex) {
+            java.util.logging.Logger.getLogger(RegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+      }
+    }
+    public String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedPassword = md.digest(password.getBytes());
+        
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedPassword) {
+            sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        
+            } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+         return null;
+        }
+    }
+            // function to check if the username already exist
+    public boolean checkUsername(String username)
+    {
+        PreparedStatement ps;
+        ResultSet rs;
+        boolean checkUser = false;
+        String query = "SELECT * FROM tbl_users WHERE username=?";
+        
+        try {
+            ps = DBConnect.getConnection().prepareStatement(query);
+            ps.setString(1, username);
+            
+            rs = ps.executeQuery();
+            
+            if(rs.next())
+            {
+                checkUser = true;
+            }
+        } catch (SQLException ex) {
+             Logger.getLogger(RegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         return checkUser;
+    }//GEN-LAST:event_btnSignupActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+        LoginForm rgf = new LoginForm();
+        rgf.setVisible(true);
+        rgf.pack();
+        rgf.setLocationRelativeTo(null);
+        rgf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.dispose();
+    }//GEN-LAST:event_jLabel6MouseClicked
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void tf_email1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_email1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_tf_email1ActionPerformed
+
+    private void cbpass1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbpass1ActionPerformed
+        // TODO add your handling code here:
+        if(cbpass1.isSelected()){
+           passf.setEchoChar((char)0);
+        }
+        else{
+            passf.setEchoChar('*');
+        }
+    }//GEN-LAST:event_cbpass1ActionPerformed
+
+    private void cbrepassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbrepassActionPerformed
+        // TODO add your handling code here:
+        if(cbrepass.isSelected()){
+           repassf.setEchoChar((char)0);
+        }
+        else{
+            repassf.setEchoChar('*');
+        }
+    }//GEN-LAST:event_cbrepassActionPerformed
 
     /**
      * @param args the command line arguments
@@ -254,7 +433,9 @@ public class RegistrationForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnSignup;
+    private javax.swing.JCheckBox cbpass1;
+    private javax.swing.JCheckBox cbrepass;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -262,9 +443,13 @@ public class RegistrationForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -272,9 +457,10 @@ public class RegistrationForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JPasswordField passf;
+    private javax.swing.JPasswordField repassf;
+    private javax.swing.JTextField tf_email1;
+    private javax.swing.JTextField tf_flname;
+    private javax.swing.JTextField tf_user;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,8 +5,13 @@
  */
 package Project;
 
+import java.awt.Cursor;
+import java.security.NoSuchAlgorithmException;
 import javax.swing.JFrame;
-
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 /**
  *
  * @author EJ
@@ -36,16 +41,17 @@ public class LoginForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
-        jTextField3 = new javax.swing.JTextField();
+        tf_user = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        jTextField2 = new javax.swing.JTextField();
+        passf = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jLabel5 = new javax.swing.JLabel();
+        cbpass = new javax.swing.JCheckBox();
+        forgotpass = new javax.swing.JLabel();
+        jPanel13 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        btnLogin = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -83,32 +89,26 @@ public class LoginForm extends javax.swing.JFrame {
 
         jPanel1.add(jPanel3);
 
-        jPanel5.setPreferredSize(new java.awt.Dimension(400, 150));
+        jPanel5.setPreferredSize(new java.awt.Dimension(400, 155));
 
         jPanel7.setPreferredSize(new java.awt.Dimension(250, 50));
         jPanel7.setLayout(new java.awt.BorderLayout(4, 4));
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        tf_user.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                tf_userActionPerformed(evt);
             }
         });
-        jPanel7.add(jTextField3, java.awt.BorderLayout.CENTER);
+        jPanel7.add(tf_user, java.awt.BorderLayout.CENTER);
 
-        jLabel4.setText("Email");
+        jLabel4.setText("Username");
         jPanel7.add(jLabel4, java.awt.BorderLayout.PAGE_START);
 
         jPanel5.add(jPanel7);
 
         jPanel6.setPreferredSize(new java.awt.Dimension(250, 50));
         jPanel6.setLayout(new java.awt.BorderLayout(4, 4));
-
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-        jPanel6.add(jTextField2, java.awt.BorderLayout.CENTER);
+        jPanel6.add(passf, java.awt.BorderLayout.CENTER);
 
         jLabel3.setText("Password");
         jPanel6.add(jLabel3, java.awt.BorderLayout.PAGE_START);
@@ -120,30 +120,44 @@ public class LoginForm extends javax.swing.JFrame {
         jPanel8.setPreferredSize(new java.awt.Dimension(250, 25));
         jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
 
-        jCheckBox1.setForeground(new java.awt.Color(51, 153, 255));
-        jCheckBox1.setText("Remember me");
-        jCheckBox1.setPreferredSize(new java.awt.Dimension(250, 25));
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        cbpass.setForeground(new java.awt.Color(51, 153, 255));
+        cbpass.setText("Show Password");
+        cbpass.setPreferredSize(new java.awt.Dimension(250, 25));
+        cbpass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                cbpassActionPerformed(evt);
             }
         });
-        jPanel8.add(jCheckBox1);
+        jPanel8.add(cbpass);
 
-        jLabel5.setForeground(new java.awt.Color(255, 102, 102));
-        jLabel5.setText("Forgot Password");
-        jPanel8.add(jLabel5);
+        forgotpass.setForeground(new java.awt.Color(255, 102, 102));
+        forgotpass.setText("Forgot Password?");
+        forgotpass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                forgotpassMouseClicked(evt);
+            }
+        });
+        jPanel8.add(forgotpass);
 
         jPanel5.add(jPanel8);
 
         jPanel1.add(jPanel5);
 
+        jPanel13.setPreferredSize(new java.awt.Dimension(400, 14));
+        jPanel13.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 50, -2));
+        jPanel1.add(jPanel13);
+
         jPanel9.setPreferredSize(new java.awt.Dimension(400, 50));
 
-        jButton2.setText("Login");
-        jButton2.setToolTipText("");
-        jButton2.setPreferredSize(new java.awt.Dimension(250, 30));
-        jPanel9.add(jButton2);
+        btnLogin.setText("Login");
+        btnLogin.setToolTipText("");
+        btnLogin.setPreferredSize(new java.awt.Dimension(250, 30));
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+        jPanel9.add(btnLogin);
 
         jPanel1.add(jPanel9);
 
@@ -151,6 +165,11 @@ public class LoginForm extends javax.swing.JFrame {
 
         jLabel2.setForeground(new java.awt.Color(102, 153, 255));
         jLabel2.setText("Don't have an account yet? ");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
         jPanel10.add(jLabel2);
 
         jPanel1.add(jPanel10);
@@ -164,22 +183,119 @@ public class LoginForm extends javax.swing.JFrame {
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/123.png"))); // NOI18N
         jPanel2.add(jLabel7);
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 0, 977, -1));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 0, 490, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void tf_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_userActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_tf_userActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+        RegistrationForm rgf = new RegistrationForm();
+        rgf.setVisible(true);
+        rgf.pack();
+        rgf.setLocationRelativeTo(null);
+        rgf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.dispose();
+    }//GEN-LAST:event_jLabel2MouseClicked
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+        PreparedStatement ps;
+        ResultSet rs;
+        
+        String pass = String.valueOf(passf.getPassword());
+        String uname = tf_user.getText();
+        
+        String hashedPass = hashPassword(pass);
+        
+        String query = "SELECT * FROM tbl_users WHERE username =? AND password =?";
+       
+        try {
+            ps = DBConnect.getConnection().prepareStatement(query);
+            
+            ps.setString(1, uname);
+            ps.setString(2, hashedPass);
+            
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+        //  Get role from database
+        String role = rs.getString("role");
+
+        // If user is admin
+        if (role.equalsIgnoreCase("admin")) {
+            AdminDashboardForm adminForm = new AdminDashboardForm();
+            adminForm.setVisible(true);
+            adminForm.pack();
+            adminForm.setLocationRelativeTo(null);
+            adminForm.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            adminForm.jLabel1.setText("Welcome < " + uname + " >");
+            this.dispose();
+        } 
+        // ✅ If user is a regular user
+        else if (role.equalsIgnoreCase("user")) {
+            ReservationForm userForm = new ReservationForm();
+            userForm.setVisible(true);
+            userForm.pack();
+            userForm.setLocationRelativeTo(null);
+            userForm.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            userForm.jLabel1.setText("Welcome < " + uname + " >");
+            this.dispose();
+        } 
+        // (Optional) Handle other roles
+        else {
+            JOptionPane.showMessageDialog(null, "Unknown role: " + role);
+        }
+    } 
+    else {
+        JOptionPane.showMessageDialog(null, "Incorrect Username Or Password", "Login Failed", JOptionPane.ERROR_MESSAGE);
+        //System.out.println("Username: [" + uname + "]");
+        //System.out.println("Password: [" + pass + "]");
+        
+    }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
+        }
+        
+    }//GEN-LAST:event_btnLoginActionPerformed
+    public String hashPassword(String password) {
+        //hash password for login form
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
+            byte[] hashedPassword = md.digest(password.getBytes());
+        
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedPassword) {
+            sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        
+            } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+         return null;
+        }
+    }
+
+    private void cbpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbpassActionPerformed
+        // TODO add your handling code here:
+        if(cbpass.isSelected()){
+           passf.setEchoChar((char)0);
+        }
+        else{
+            passf.setEchoChar('*');
+        }
+    }//GEN-LAST:event_cbpassActionPerformed
+
+    private void forgotpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotpassMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_forgotpassMouseClicked
 
     /**
      * @param args the command line arguments
@@ -217,16 +333,17 @@ public class LoginForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JCheckBox cbpass;
+    private javax.swing.JLabel forgotpass;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
@@ -234,7 +351,8 @@ public class LoginForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JPasswordField passf;
+    private javax.swing.JTextField tf_user;
     // End of variables declaration//GEN-END:variables
+
 }
