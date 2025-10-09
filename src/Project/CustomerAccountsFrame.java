@@ -7,7 +7,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -59,7 +58,7 @@ private void loadCustomerData() {
     loadCustomerData("");
 }
 private void loadCustomerData(String searchTerm) {
-    String URL = "jdbc:mysql://localhost:3306/asc_db";
+    String URL = "jdbc:mysql://localhost:3306/tolpawiring";
     String USER = "root";
     String PASS = "";
 
@@ -67,11 +66,11 @@ private void loadCustomerData(String searchTerm) {
         Class.forName("com.mysql.jdbc.Driver");
         Connection connect = (Connection) DriverManager.getConnection(URL, USER, PASS);
 
-        String query = "SELECT customer_id, complete_name, email_address, account_created FROM customers";
+        String query = "SELECT id, flname, email, account_created FROM tbl_users WHERE role = 'user'";
         PreparedStatement pst;
 
         if (!searchTerm.isEmpty()) {
-            query += " WHERE complete_name LIKE ? OR email_address LIKE ?";
+            query += " AND (flname LIKE ? OR email LIKE ?)";
             pst = connect.prepareStatement(query);
             pst.setString(1, "%" + searchTerm + "%");
             pst.setString(2, "%" + searchTerm + "%");
@@ -82,12 +81,12 @@ private void loadCustomerData(String searchTerm) {
         ResultSet result = pst.executeQuery();
 
         DefaultTableModel tblModel = (DefaultTableModel) jTable1.getModel();
-        tblModel.setRowCount(0); // clear previous rows
+        tblModel.setRowCount(0);
 
         while (result.next()) {
-            int id = result.getInt("customer_id");
-            String name = result.getString("complete_name");
-            String email = result.getString("email_address");
+            int id = result.getInt("id");
+            String name = result.getString("flname");
+            String email = result.getString("email");
             String accountCreated = result.getString("account_created");
 
             Object[] rowData = {String.valueOf(id), name, email, accountCreated, "Delete"};
@@ -216,10 +215,10 @@ class ButtonEditor extends DefaultCellEditor {
     }
 
    private void deleteFromDatabase(int id) {
-    String URL = "jdbc:mysql://localhost:3306/asc_db";
+    String URL = "jdbc:mysql://localhost:3306/tolpawiring";
     String USER = "root";
     String PASS = "";
-    String query = "DELETE FROM customers WHERE customer_id=?";
+    String query = "DELETE FROM tbl_users WHERE id = ? ";
 
     try (Connection connect = (Connection) DriverManager.getConnection(URL, USER, PASS);
          PreparedStatement statement = connect.prepareStatement(query)) {
