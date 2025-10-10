@@ -70,14 +70,16 @@ public class RegistrationForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ToL Pawiring");
-        setPreferredSize(new java.awt.Dimension(920, 500));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 0));
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setPreferredSize(new java.awt.Dimension(400, 40));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("REGISTER");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -85,22 +87,25 @@ public class RegistrationForm extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(150, 150, 150)
+                .addGap(154, 154, 154)
                 .addComponent(jLabel1)
-                .addContainerGap(166, Short.MAX_VALUE))
+                .addContainerGap(162, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel4);
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(400, 320));
 
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel7.setLayout(new java.awt.BorderLayout(4, 4));
 
+        tf_flname.setBackground(new java.awt.Color(255, 255, 255));
         tf_flname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_flnameActionPerformed(evt);
@@ -108,14 +113,17 @@ public class RegistrationForm extends javax.swing.JFrame {
         });
         jPanel7.add(tf_flname, java.awt.BorderLayout.CENTER);
 
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Fullname");
         jPanel7.add(jLabel3, java.awt.BorderLayout.PAGE_START);
 
         jPanel3.add(jPanel7);
 
+        jPanel12.setBackground(new java.awt.Color(255, 255, 255));
         jPanel12.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel12.setLayout(new java.awt.BorderLayout(4, 4));
 
+        tf_email1.setBackground(new java.awt.Color(255, 255, 255));
         tf_email1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_email1ActionPerformed(evt);
@@ -123,14 +131,17 @@ public class RegistrationForm extends javax.swing.JFrame {
         });
         jPanel12.add(tf_email1, java.awt.BorderLayout.CENTER);
 
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Email");
         jPanel12.add(jLabel8, java.awt.BorderLayout.PAGE_START);
 
         jPanel3.add(jPanel12);
 
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel6.setLayout(new java.awt.BorderLayout(4, 4));
 
+        tf_user.setBackground(new java.awt.Color(255, 255, 255));
         tf_user.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_userActionPerformed(evt);
@@ -138,23 +149,31 @@ public class RegistrationForm extends javax.swing.JFrame {
         });
         jPanel6.add(tf_user, java.awt.BorderLayout.CENTER);
 
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Username");
         jPanel6.add(jLabel2, java.awt.BorderLayout.PAGE_START);
 
         jPanel3.add(jPanel6);
 
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel10.setLayout(new java.awt.BorderLayout(4, 4));
 
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Password");
         jPanel10.add(jLabel5, java.awt.BorderLayout.PAGE_START);
+
+        passf.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.add(passf, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel10);
 
+        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
         jPanel13.setPreferredSize(new java.awt.Dimension(400, 14));
         jPanel13.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 50, -2));
 
+        cbpass1.setBackground(new java.awt.Color(255, 255, 255));
+        cbpass1.setForeground(new java.awt.Color(0, 0, 0));
         cbpass1.setText("Show Password");
         cbpass1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         cbpass1.setPreferredSize(new java.awt.Dimension(121, 30));
@@ -168,18 +187,26 @@ public class RegistrationForm extends javax.swing.JFrame {
 
         jPanel3.add(jPanel13);
 
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel8.setForeground(new java.awt.Color(255, 255, 255));
         jPanel8.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel8.setLayout(new java.awt.BorderLayout(4, 4));
 
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Confirm Password");
         jPanel8.add(jLabel4, java.awt.BorderLayout.PAGE_START);
+
+        repassf.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.add(repassf, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel8);
 
+        jPanel15.setBackground(new java.awt.Color(255, 255, 255));
         jPanel15.setPreferredSize(new java.awt.Dimension(400, 14));
         jPanel15.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 50, -2));
 
+        cbrepass.setBackground(new java.awt.Color(255, 255, 255));
+        cbrepass.setForeground(new java.awt.Color(0, 0, 0));
         cbrepass.setText("Show Password");
         cbrepass.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         cbrepass.setPreferredSize(new java.awt.Dimension(121, 30));
@@ -195,8 +222,10 @@ public class RegistrationForm extends javax.swing.JFrame {
 
         jPanel1.add(jPanel3);
 
+        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
         jPanel11.setPreferredSize(new java.awt.Dimension(400, 40));
 
+        btnSignup.setBackground(new java.awt.Color(255, 102, 0));
         btnSignup.setText("Signup");
         btnSignup.setPreferredSize(new java.awt.Dimension(250, 30));
         btnSignup.addActionListener(new java.awt.event.ActionListener() {
@@ -208,9 +237,10 @@ public class RegistrationForm extends javax.swing.JFrame {
 
         jPanel1.add(jPanel11);
 
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setPreferredSize(new java.awt.Dimension(400, 50));
 
-        jLabel6.setForeground(new java.awt.Color(0, 153, 255));
+        jLabel6.setForeground(new java.awt.Color(0, 0, 255));
         jLabel6.setText("Already have an Account? Click Here");
         jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

@@ -25,6 +25,7 @@ public class LoginForm extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setResizable(false);
     }
 
     /**
@@ -60,14 +61,16 @@ public class LoginForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ToL Pawiring");
         setName("ToL Pawiring"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(890, 450));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(400, 0));
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(400, 100));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 25)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(92, 93, 93));
         jLabel1.setText("LOGIN");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -75,25 +78,28 @@ public class LoginForm extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(167, 167, 167)
+                .addGap(157, 157, 157)
                 .addComponent(jLabel1)
-                .addContainerGap(177, Short.MAX_VALUE))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(46, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
                 .addComponent(jLabel1)
-                .addGap(29, 29, 29))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3);
 
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setPreferredSize(new java.awt.Dimension(400, 155));
 
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setPreferredSize(new java.awt.Dimension(250, 50));
         jPanel7.setLayout(new java.awt.BorderLayout(4, 4));
 
+        tf_user.setBackground(new java.awt.Color(255, 255, 255));
         tf_user.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_userActionPerformed(evt);
@@ -101,26 +107,36 @@ public class LoginForm extends javax.swing.JFrame {
         });
         jPanel7.add(tf_user, java.awt.BorderLayout.CENTER);
 
+        jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(92, 93, 93));
         jLabel4.setText("Username");
         jPanel7.add(jLabel4, java.awt.BorderLayout.PAGE_START);
 
         jPanel5.add(jPanel7);
 
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setPreferredSize(new java.awt.Dimension(250, 50));
         jPanel6.setLayout(new java.awt.BorderLayout(4, 4));
+
+        passf.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.add(passf, java.awt.BorderLayout.CENTER);
 
+        jLabel3.setBackground(new java.awt.Color(255, 102, 0));
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(92, 93, 93));
         jLabel3.setText("Password");
         jPanel6.add(jLabel3, java.awt.BorderLayout.PAGE_START);
 
         jPanel5.add(jPanel6);
 
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setAutoscrolls(true);
         jPanel8.setMinimumSize(new java.awt.Dimension(250, 20));
         jPanel8.setPreferredSize(new java.awt.Dimension(250, 25));
         jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
 
-        cbpass.setForeground(new java.awt.Color(51, 153, 255));
+        cbpass.setBackground(new java.awt.Color(255, 255, 255));
+        cbpass.setForeground(new java.awt.Color(0, 157, 244));
         cbpass.setText("Show Password");
         cbpass.setPreferredSize(new java.awt.Dimension(250, 25));
         cbpass.addActionListener(new java.awt.event.ActionListener() {
@@ -130,7 +146,7 @@ public class LoginForm extends javax.swing.JFrame {
         });
         jPanel8.add(cbpass);
 
-        forgotpass.setForeground(new java.awt.Color(255, 102, 102));
+        forgotpass.setForeground(new java.awt.Color(255, 0, 0));
         forgotpass.setText("Forgot Password?");
         forgotpass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -143,12 +159,17 @@ public class LoginForm extends javax.swing.JFrame {
 
         jPanel1.add(jPanel5);
 
+        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
         jPanel13.setPreferredSize(new java.awt.Dimension(400, 14));
         jPanel13.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 50, -2));
         jPanel1.add(jPanel13);
 
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setPreferredSize(new java.awt.Dimension(400, 50));
 
+        btnLogin.setBackground(new java.awt.Color(0, 157, 224));
+        btnLogin.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        btnLogin.setForeground(new java.awt.Color(255, 255, 255));
         btnLogin.setText("Login");
         btnLogin.setToolTipText("");
         btnLogin.setPreferredSize(new java.awt.Dimension(250, 30));
@@ -161,9 +182,10 @@ public class LoginForm extends javax.swing.JFrame {
 
         jPanel1.add(jPanel9);
 
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.setPreferredSize(new java.awt.Dimension(400, 50));
 
-        jLabel2.setForeground(new java.awt.Color(102, 153, 255));
+        jLabel2.setForeground(new java.awt.Color(0, 157, 224));
         jLabel2.setText("Don't have an account yet? ");
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -183,7 +205,7 @@ public class LoginForm extends javax.swing.JFrame {
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/123.png"))); // NOI18N
         jPanel2.add(jLabel7);
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 0, 490, -1));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 0, 500, 440));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -233,7 +255,7 @@ public class LoginForm extends javax.swing.JFrame {
             adminForm.pack();
             adminForm.setLocationRelativeTo(null);
             adminForm.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            adminForm.jLabel1.setText("Welcome < " + uname + " >");
+      
             this.dispose();
         } 
         // ✅ If user is a regular user
@@ -243,7 +265,7 @@ public class LoginForm extends javax.swing.JFrame {
             userForm.pack();
             userForm.setLocationRelativeTo(null);
             userForm.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            userForm.jLabel1.setText("Welcome < " + uname + " >");
+            
             this.dispose();
         } 
         // (Optional) Handle other roles
@@ -336,7 +358,7 @@ public class LoginForm extends javax.swing.JFrame {
     private javax.swing.JButton btnLogin;
     private javax.swing.JCheckBox cbpass;
     private javax.swing.JLabel forgotpass;
-    private javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
