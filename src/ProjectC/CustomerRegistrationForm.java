@@ -3,30 +3,35 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Project;
+package ProjectC;
 
 
+import java.awt.Cursor;
+import java.security.NoSuchAlgorithmException;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import Project.DBConnect;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import Project.TestConnection;
 
+
+import javax.swing.JFrame;
+//import Project.CustomerLandingPage;
 /**
  *
  * @author EJ
  */
-public class RegistrationForm extends javax.swing.JFrame {
-    
+public class CustomerRegistrationForm extends javax.swing.JFrame {
+
     /**
-     * Creates new form RegistrationForm
+     * Creates new form CustomerRegistrationForm
      */
-    public RegistrationForm() {
+    public CustomerRegistrationForm() {
         initComponents();
-        this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     /**
@@ -69,7 +74,6 @@ public class RegistrationForm extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("ToL Pawiring");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -279,138 +283,22 @@ public class RegistrationForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tf_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_userActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tf_userActionPerformed
-
     private void tf_flnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_flnameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_flnameActionPerformed
-
-    private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed
-        
-            // TODO add your handling code here:
-            
-            String flname = tf_flname.getText();
-            String uname = tf_user.getText();
-            String email = tf_email1.getText();
-            String pass = String.valueOf(passf.getPassword());
-            String re_pass = String.valueOf(repassf.getPassword());
-            
-            String hashedPass = hashPassword(pass);
-            
-            String role = "user"; // Default role for all new users
-            
-            
-            if(uname.equals("")){
-                JOptionPane.showMessageDialog(null, "Add Username");
-            }
-            else if(flname.equals("")){
-                JOptionPane.showMessageDialog(null, "Add your Full Name");
-            }
-            else if(email.equals("")){
-                JOptionPane.showMessageDialog(null, "Add an Email");
-                }
-            else if(pass.equals("")){
-                JOptionPane.showMessageDialog(null, "Add a Password");
-            }
-            else if (!pass.equals(re_pass)){
-                JOptionPane.showMessageDialog(null, "Re-type the Password");
-            }
-            else if(checkUsername(uname))
-            {
-            JOptionPane.showMessageDialog(null, "This Username Already Exist");
-            }
-            
-            else{
-                
-            PreparedStatement ps;
-            String query;
-            query = "INSERT INTO tbl_users(flname, email, username, password, role) VALUES (?,?,?,?,?)";
-            
-        try {    
-            ps = DBConnect.getConnection().prepareStatement(query);
-            
-            ps.setString(1,flname);
-            ps.setString(2,email);
-            ps.setString(3,uname);
-            ps.setString(4,hashedPass);
-            ps.setString(5,role);
-            
-            if(ps.executeUpdate() > 0){
-                JOptionPane.showMessageDialog(null,"New User Added");
-                
-                tf_flname.setText("");
-                tf_email1.setText("");
-                tf_user.setText("");
-                passf.setText("");
-                repassf.setText("");
-            }
-            
-        } catch (SQLException ex) {
-            java.util.logging.Logger.getLogger(RegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
-            
-        }
-      }
-    }
-    public String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashedPassword = md.digest(password.getBytes());
-        
-            StringBuilder sb = new StringBuilder();
-            for (byte b : hashedPassword) {
-            sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        
-            } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-         return null;
-        }
-    }
-            // function to check if the username already exist
-    public boolean checkUsername(String username)
-    {
-        PreparedStatement ps;
-        ResultSet rs;
-        boolean checkUser = false;
-        String query = "SELECT * FROM tbl_users WHERE username=?";
-        
-        try {
-            ps = DBConnect.getConnection().prepareStatement(query);
-            ps.setString(1, username);
-            
-            rs = ps.executeQuery();
-            
-            if(rs.next())
-            {
-                checkUser = true;
-            }
-        } catch (SQLException ex) {
-             Logger.getLogger(RegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         return checkUser;
-    }//GEN-LAST:event_btnSignupActionPerformed
-
-    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-        // TODO add your handling code here:
-        LoginForm rgf = new LoginForm();
-        rgf.setVisible(true);
-        rgf.pack();
-        rgf.setLocationRelativeTo(null);
-        rgf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.dispose();
-    }//GEN-LAST:event_jLabel6MouseClicked
 
     private void tf_email1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_email1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_email1ActionPerformed
 
+    private void tf_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_userActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_userActionPerformed
+
     private void cbpass1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbpass1ActionPerformed
         // TODO add your handling code here:
         if(cbpass1.isSelected()){
-           passf.setEchoChar((char)0);
+            passf.setEchoChar((char)0);
         }
         else{
             passf.setEchoChar('*');
@@ -420,12 +308,127 @@ public class RegistrationForm extends javax.swing.JFrame {
     private void cbrepassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbrepassActionPerformed
         // TODO add your handling code here:
         if(cbrepass.isSelected()){
-           repassf.setEchoChar((char)0);
+            repassf.setEchoChar((char)0);
         }
         else{
             repassf.setEchoChar('*');
         }
     }//GEN-LAST:event_cbrepassActionPerformed
+
+    private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed
+
+        // TODO add your handling code here:
+
+        String flname = tf_flname.getText();
+        String uname = tf_user.getText();
+        String email = tf_email1.getText();
+        String pass = String.valueOf(passf.getPassword());
+        String re_pass = String.valueOf(repassf.getPassword());
+
+        String hashedPass = hashPassword(pass);
+
+            String role = "user"; // Default role for all new users
+
+        if(uname.equals("")){
+            JOptionPane.showMessageDialog(null, "Add Username");
+        }
+        else if(flname.equals("")){
+            JOptionPane.showMessageDialog(null, "Add your Full Name");
+        }
+        else if(email.equals("")){
+            JOptionPane.showMessageDialog(null, "Add an Email");
+        }
+        else if(pass.equals("")){
+            JOptionPane.showMessageDialog(null, "Add a Password");
+        }
+        else if (!pass.equals(re_pass)){
+            JOptionPane.showMessageDialog(null, "Re-type the Password");
+        }
+        else if(checkUsername(uname))
+        {
+            JOptionPane.showMessageDialog(null, "This Username Already Exist");
+        }
+
+        else{
+
+            PreparedStatement ps;
+            String query;
+            query = "INSERT INTO tbl_users(flname, email, username, password, role) VALUES (?,?,?,?,?)";
+
+            try {
+                ps = DBConnect.getConnection().prepareStatement(query);
+
+                ps.setString(1,flname);
+                ps.setString(2,email);
+                ps.setString(3,uname);
+                ps.setString(4,hashedPass);
+                ps.setString(5,role);
+
+                if(ps.executeUpdate() > 0){
+                    JOptionPane.showMessageDialog(null,"New User Added");
+
+                    tf_flname.setText("");
+                    tf_email1.setText("");
+                    tf_user.setText("");
+                    passf.setText("");
+                    repassf.setText("");
+                }
+
+            } catch (SQLException ex) {
+                java.util.logging.Logger.getLogger(CustomerRegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
+
+            }
+        }
+        }
+        public String hashPassword(String password) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                byte[] hashedPassword = md.digest(password.getBytes());
+
+                StringBuilder sb = new StringBuilder();
+                for (byte b : hashedPassword) {
+                    sb.append(String.format("%02x", b));
+                }
+                return sb.toString();
+
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        // function to check if the username already exist
+        public boolean checkUsername(String username)
+        {
+            PreparedStatement ps;
+            ResultSet rs;
+            boolean checkUser = false;
+            String query = "SELECT * FROM tbl_users WHERE username=?";
+
+            try {
+                ps = DBConnect.getConnection().prepareStatement(query);
+                ps.setString(1, username);
+
+                rs = ps.executeQuery();
+
+                if(rs.next())
+                {
+                    checkUser = true;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(CustomerRegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return checkUser;
+    }//GEN-LAST:event_btnSignupActionPerformed
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        // TODO add your handling code here:
+        CustomerLoginForm clf = new CustomerLoginForm();
+        clf.setVisible(true);
+        clf.pack();
+        clf.setLocationRelativeTo(null);
+        clf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.dispose();
+    }//GEN-LAST:event_jLabel6MouseClicked
 
     /**
      * @param args the command line arguments
@@ -444,20 +447,20 @@ public class RegistrationForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegistrationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerRegistrationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegistrationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerRegistrationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegistrationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerRegistrationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegistrationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerRegistrationForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RegistrationForm().setVisible(true);
+                new CustomerRegistrationForm().setVisible(true);
             }
         });
     }

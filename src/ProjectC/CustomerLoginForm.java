@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Project;
+
+package ProjectC;
 
 import java.awt.Cursor;
 import java.security.NoSuchAlgorithmException;
@@ -12,16 +13,26 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import Project.TestConnection;
+import Project.DBConnect;
+import Project.ReservationForm;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+
+
+import javax.swing.JFrame;
+import Project.AdminDashboardForm;
 /**
  *
  * @author EJ
  */
-public class LoginForm extends javax.swing.JFrame {
+public class CustomerLoginForm extends javax.swing.JFrame {
 
     /**
-     * Creates new form LoginForm
+     * Creates new form CustomerLoginForm
      */
-    public LoginForm() {
+    public CustomerLoginForm() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,8 +71,6 @@ public class LoginForm extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("ToL Pawiring");
-        setName("ToL Pawiring"); // NOI18N
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -72,23 +81,23 @@ public class LoginForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 25)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(92, 93, 93));
-        jLabel1.setText("ADMIN LOGIN");
+        jLabel1.setText("CUSTOMER LOGIN");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(109, 109, 109)
+                .addGap(89, 89, 89)
                 .addComponent(jLabel1)
-                .addContainerGap(118, Short.MAX_VALUE))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(43, Short.MAX_VALUE)
+                .addContainerGap(60, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(23, 23, 23))
+                .addContainerGap())
         );
 
         jPanel1.add(jPanel3);
@@ -225,78 +234,84 @@ public class LoginForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_userActionPerformed
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+    private void cbpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbpassActionPerformed
         // TODO add your handling code here:
-        RegistrationForm rgf = new RegistrationForm();
-        rgf.setVisible(true);
-        rgf.pack();
-        rgf.setLocationRelativeTo(null);
-        rgf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.dispose();
-    }//GEN-LAST:event_jLabel2MouseClicked
+        if(cbpass.isSelected()){
+            passf.setEchoChar((char)0);
+        }
+        else{
+            passf.setEchoChar('*');
+        }
+    }//GEN-LAST:event_cbpassActionPerformed
+
+    private void forgotpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotpassMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_forgotpassMouseClicked
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
         PreparedStatement ps;
         ResultSet rs;
-        
+
         String pass = String.valueOf(passf.getPassword());
         String uname = tf_user.getText();
-        
+
         String hashedPass = hashPassword(pass);
-        
+
         String query = "SELECT * FROM tbl_users WHERE username =? AND password =?";
-       
+
         try {
             ps = DBConnect.getConnection().prepareStatement(query);
-            
+
             ps.setString(1, uname);
             ps.setString(2, hashedPass);
-            
-            rs = ps.executeQuery();
-            
-            if (rs.next()) {
-        //  Get role from database
-        String role = rs.getString("role");
 
-        // If user is admin
-        if (role.equalsIgnoreCase("admin")) {
-            AdminDashboardForm adminForm = new AdminDashboardForm();
-            adminForm.setVisible(true);
-            adminForm.pack();
-            adminForm.setLocationRelativeTo(null);
-            adminForm.setExtendedState(JFrame.MAXIMIZED_BOTH);
-      
-            this.dispose();
-        } 
-        // ✅ If user is a regular user
-        else if (role.equalsIgnoreCase("user")) {
-            ReservationForm userForm = new ReservationForm();
-            userForm.setVisible(true);
-            userForm.pack();
-            userForm.setLocationRelativeTo(null);
-            userForm.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            
-            this.dispose();
-        } 
-        // (Optional) Handle other roles
-        else {
-            JOptionPane.showMessageDialog(null, "Unknown role: " + role);
-        }
-    } 
-    else {
-        JOptionPane.showMessageDialog(null, "Incorrect Username Or Password", "Login Failed", JOptionPane.ERROR_MESSAGE);
-        //System.out.println("Username: [" + uname + "]");
-        //System.out.println("Password: [" + pass + "]");
-        
-    }
-            
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                //  Get role from database
+                String role = rs.getString("role");
+
+                // If user is customer
+                if (role.equalsIgnoreCase("customer")) {
+                    CustomerLoginForm CustomerForm = new CustomerLoginForm();
+                    CustomerForm.setVisible(true);
+                    CustomerForm.pack();
+                    CustomerForm.setLocationRelativeTo(null);
+                    CustomerForm.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+                    this.dispose();
+                }
+                // ✅ If user is a admin
+                else if (role.equalsIgnoreCase("admin")) {
+                    ReservationForm userForm = new ReservationForm();
+                    userForm.setVisible(true);
+                    userForm.pack();
+                    userForm.setLocationRelativeTo(null);
+                    userForm.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+                    this.dispose();
+                }
+                // (Optional) Handle other roles
+                else {
+                    JOptionPane.showMessageDialog(null, "Unknown role: " + role);
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Incorrect Username Or Password", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                //System.out.println("Username: [" + uname + "]");
+                //System.out.println("Password: [" + pass + "]");
+
+            }
+
         } catch (SQLException ex) {
-            Logger.getLogger(LoginForm.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CustomerLoginForm.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_btnLoginActionPerformed
+
     public String hashPassword(String password) {
         //hash password for login form
         try {
@@ -314,21 +329,16 @@ public class LoginForm extends javax.swing.JFrame {
          return null;
         }
     }
-
-    private void cbpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbpassActionPerformed
+    
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
-        if(cbpass.isSelected()){
-           passf.setEchoChar((char)0);
-        }
-        else{
-            passf.setEchoChar('*');
-        }
-    }//GEN-LAST:event_cbpassActionPerformed
-
-    private void forgotpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotpassMouseClicked
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_forgotpassMouseClicked
+        CustomerRegistrationForm crf = new  CustomerRegistrationForm();
+        crf.setVisible(true);
+        crf.pack();
+        crf.setLocationRelativeTo(null);
+        crf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.dispose();
+    }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
         // TODO add your handling code here:
@@ -351,20 +361,20 @@ public class LoginForm extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerLoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerLoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerLoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerLoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginForm().setVisible(true);
+                new CustomerLoginForm().setVisible(true);
             }
         });
     }
@@ -392,5 +402,4 @@ public class LoginForm extends javax.swing.JFrame {
     private javax.swing.JPasswordField passf;
     private javax.swing.JTextField tf_user;
     // End of variables declaration//GEN-END:variables
-
 }

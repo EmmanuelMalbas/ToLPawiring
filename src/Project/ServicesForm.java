@@ -120,7 +120,7 @@ public class ServicesForm extends javax.swing.JFrame {
 
         jLabel18.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(92, 93, 93));
-        jLabel18.setText("PRODUCT LIST");
+        jLabel18.setText("SERVICES LIST");
         jPanel4.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 20, -1, -1));
 
         jLabel19.setBackground(new java.awt.Color(92, 93, 93));
