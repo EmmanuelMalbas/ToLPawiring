@@ -48,6 +48,7 @@ public class CustomerReservation extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -172,20 +173,32 @@ public class CustomerReservation extends javax.swing.JFrame {
         jLabel12.setText("Schedule");
         jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 260, -1, -1));
 
-        jButton1.setBackground(new java.awt.Color(24, 25, 155));
+        jButton1.setBackground(new java.awt.Color(253, 201, 22));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("BOOK NOW");
+        jButton1.setForeground(new java.awt.Color(51, 51, 51));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit_property_24px.png"))); // NOI18N
+        jButton1.setText("RESERVATION");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel4.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 360, 200, 50));
+        jPanel4.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 420, 200, 50));
 
-        jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 560, 480));
+        jButton3.setBackground(new java.awt.Color(24, 25, 155));
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("BOOK NOW");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 350, 200, 50));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, 640, 550));
+        jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 560, 490));
+
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, 640, 570));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/2024-10-30_resized_1590x760.jpg"))); // NOI18N
         jLabel4.setText("jLabel4");
@@ -206,8 +219,13 @@ public class CustomerReservation extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+                new HelperClass(new CustomerReservationList());
+                this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,6 +264,7 @@ public class CustomerReservation extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;

@@ -32,13 +32,11 @@ public class LoginForm extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         cbpass = new javax.swing.JCheckBox();
-        forgotpass = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         btnLogin = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
 
@@ -83,7 +81,6 @@ public class LoginForm extends javax.swing.JFrame {
         jPanel7.setPreferredSize(new java.awt.Dimension(250, 50));
         jPanel7.setLayout(new java.awt.BorderLayout(4, 4));
 
-        tf_user.setBackground(new java.awt.Color(255, 255, 255));
         tf_user.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_userActionPerformed(evt);
@@ -101,8 +98,6 @@ public class LoginForm extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setPreferredSize(new java.awt.Dimension(250, 50));
         jPanel6.setLayout(new java.awt.BorderLayout(4, 4));
-
-        passf.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.add(passf, java.awt.BorderLayout.CENTER);
 
         jLabel3.setBackground(new java.awt.Color(255, 102, 0));
@@ -129,15 +124,6 @@ public class LoginForm extends javax.swing.JFrame {
             }
         });
         jPanel8.add(cbpass);
-
-        forgotpass.setForeground(new java.awt.Color(255, 0, 0));
-        forgotpass.setText("Forgot Password?");
-        forgotpass.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                forgotpassMouseClicked(evt);
-            }
-        });
-        jPanel8.add(forgotpass);
 
         jPanel5.add(jPanel8);
 
@@ -179,15 +165,6 @@ public class LoginForm extends javax.swing.JFrame {
         jPanel10.add(jLabel2);
 
         jPanel1.add(jPanel10);
-
-        jLabel5.setForeground(new java.awt.Color(0, 157, 224));
-        jLabel5.setText("Log in as Customer");
-        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel5MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel5);
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 430));
 
@@ -298,15 +275,6 @@ public class LoginForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbpassActionPerformed
 
-    private void forgotpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotpassMouseClicked
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_forgotpassMouseClicked
-
-    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel5MouseClicked
-
     /**
      * @param args the command line arguments
      */
@@ -345,12 +313,10 @@ public class LoginForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JCheckBox cbpass;
-    private javax.swing.JLabel forgotpass;
     public javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;

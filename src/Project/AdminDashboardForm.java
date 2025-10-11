@@ -36,7 +36,6 @@ public class AdminDashboardForm extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -46,9 +45,6 @@ public class AdminDashboardForm extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
-        jPanel47 = new javax.swing.JPanel();
-        jPanel48 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         jPanel49 = new javax.swing.JPanel();
         jPanel50 = new javax.swing.JPanel();
         jLabel30 = new javax.swing.JLabel();
@@ -185,18 +181,16 @@ public class AdminDashboardForm extends javax.swing.JFrame {
         jLabel12.setText("FEATURES");
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, -1, -1));
 
-        jLabel8.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit_property_24px.png"))); // NOI18N
-        jLabel8.setText(" Manage Product");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, -1, -1));
-
         jLabel14.setBackground(new java.awt.Color(255, 255, 255));
         jLabel14.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sort_window_24px.png"))); // NOI18N
         jLabel14.setText(" Manage Reservation");
+        jLabel14.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel14MouseClicked(evt);
+            }
+        });
         jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
 
         jLabel15.setBackground(new java.awt.Color(255, 255, 255));
@@ -216,6 +210,11 @@ public class AdminDashboardForm extends javax.swing.JFrame {
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/account_24px.png"))); // NOI18N
         jLabel16.setText(" Manage Services");
+        jLabel16.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel16MouseClicked(evt);
+            }
+        });
         jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, -1, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 250, 950));
@@ -250,46 +249,6 @@ public class AdminDashboardForm extends javax.swing.JFrame {
         jPanel7.setBackground(new java.awt.Color(204, 204, 204));
         jPanel7.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel47.setBackground(new java.awt.Color(255, 255, 255));
-
-        jPanel48.setBackground(new java.awt.Color(24, 25, 155));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Products");
-
-        javax.swing.GroupLayout jPanel48Layout = new javax.swing.GroupLayout(jPanel48);
-        jPanel48.setLayout(jPanel48Layout);
-        jPanel48Layout.setHorizontalGroup(
-            jPanel48Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel48Layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(jLabel5)
-                .addContainerGap(92, Short.MAX_VALUE))
-        );
-        jPanel48Layout.setVerticalGroup(
-            jPanel48Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel48Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel47Layout = new javax.swing.GroupLayout(jPanel47);
-        jPanel47.setLayout(jPanel47Layout);
-        jPanel47Layout.setHorizontalGroup(
-            jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel48, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel47Layout.setVerticalGroup(
-            jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel47Layout.createSequentialGroup()
-                .addComponent(jPanel48, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 111, Short.MAX_VALUE))
-        );
-
-        jPanel7.add(jPanel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, -1));
 
         jPanel49.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -329,7 +288,7 @@ public class AdminDashboardForm extends javax.swing.JFrame {
                 .addGap(0, 111, Short.MAX_VALUE))
         );
 
-        jPanel7.add(jPanel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 250, -1, -1));
+        jPanel7.add(jPanel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, -1, -1));
 
         jPanel51.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -369,7 +328,7 @@ public class AdminDashboardForm extends javax.swing.JFrame {
                 .addGap(0, 111, Short.MAX_VALUE))
         );
 
-        jPanel7.add(jPanel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 60, -1, -1));
+        jPanel7.add(jPanel51, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 100, -1, -1));
 
         jPanel5.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 650, 520));
 
@@ -726,6 +685,16 @@ public class AdminDashboardForm extends javax.swing.JFrame {
             this.dispose();
     }//GEN-LAST:event_jLabel15MouseClicked
 
+    private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
+        new HelperClass(new ReservationForm());
+        this.dispose();
+    }//GEN-LAST:event_jLabel14MouseClicked
+
+    private void jLabel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel16MouseClicked
+        new HelperClass(new ServicesForm());
+        this.dispose();
+    }//GEN-LAST:event_jLabel16MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -788,9 +757,7 @@ public class AdminDashboardForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -813,8 +780,6 @@ public class AdminDashboardForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel40;
     private javax.swing.JPanel jPanel41;
     private javax.swing.JPanel jPanel42;
-    private javax.swing.JPanel jPanel47;
-    private javax.swing.JPanel jPanel48;
     private javax.swing.JPanel jPanel49;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel50;
