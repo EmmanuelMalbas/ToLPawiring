@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ProjectC;
+package Project;
 
 import javax.swing.JFrame;
 
@@ -79,7 +79,7 @@ public class CustomerLandingPage extends javax.swing.JFrame {
         jLabel28.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(92, 93, 93));
         jLabel28.setText("@TheChosenOne 2025");
-        jPanel4.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 30, -1, -1));
+        jPanel4.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 30, -1, -1));
 
         jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 670, 1620, 90));
 
@@ -104,7 +104,7 @@ public class CustomerLandingPage extends javax.swing.JFrame {
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Book Now!");
         jButton1.setBorder(null);
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 200, 160, 50));
+        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 200, 160, 50));
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(-30, 0, 1620, 280));
 

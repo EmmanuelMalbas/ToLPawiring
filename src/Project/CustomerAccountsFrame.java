@@ -414,7 +414,6 @@ private void addDeleteButtonToTable() {
         jPanel5.setForeground(new java.awt.Color(0, 102, 255));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTextField1.setEditable(false);
         jTextField1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -441,7 +440,7 @@ private void addDeleteButtonToTable() {
         jPanel5.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 510, -1));
 
         jTable1.setBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setForeground(new java.awt.Color(255, 255, 255));
+        jTable1.setForeground(new java.awt.Color(92, 93, 93));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
