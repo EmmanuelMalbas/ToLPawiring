@@ -299,7 +299,7 @@ public class RegistrationForm extends javax.swing.JFrame {
             
             String hashedPass = hashPassword(pass);
             
-            String role = "user"; // Default role for all new users
+            String role = "admin"; // Default role for all new users
             
             
             if(uname.equals("")){
