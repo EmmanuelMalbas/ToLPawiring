@@ -10,6 +10,12 @@ import java.awt.event.*;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
+import java.sql.*;                      
+import javax.swing.table.DefaultTableModel; 
+import javax.swing.table.TableCellRenderer;
+import Project.LoginForm;
+
+
 /**
  *
  * @author EJ
@@ -20,14 +26,192 @@ public class ServicesForm extends javax.swing.JFrame {
      * Creates new form ServicesForm
      */
     public ServicesForm() {
-        initComponents();
-        jLabel19.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                openPopupDialog();
-            }
+
+    initComponents();
+    loadServiceData();
+    addDeleteButtonToTable();
+    jTable1.setRowHeight(35);
+    jTable1.getColumn("Action").setCellRenderer(new ButtonRenderer());
+    jTable1.getColumn("Action").setCellEditor(new ButtonEditor(new JCheckBox()));
+
+    jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+    jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+    jTable1.getColumnModel().getColumn(0).setWidth(0);
+        
+    jLabel19.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            openPopupDialog();
+        }
+    });
+}
+    private void loadServiceData() {
+    loadServiceData("");
+}
+    private void loadServiceData(String searchTerm) {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0); // Clear existing rows
+
+    String query = "SELECT service_id, service_name, service_description, date_uploaded, status FROM tbl_service "
+                 + "WHERE service_name LIKE ? OR service_description LIKE ?";
+
+    try (Connection con = DBConnect.getConnection();
+         PreparedStatement ps = con.prepareStatement(query)) {
+        
+        ps.setString(1, "%" + searchTerm + "%");
+        ps.setString(2, "%" + searchTerm + "%");
+        ResultSet rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            int id = rs.getInt("service_id");
+            String name = rs.getString("service_name");
+            String desc = rs.getString("service_description");
+            String date = rs.getString("date_uploaded");
+            String status = rs.getString("status");
+            model.addRow(new Object[]{id, name, desc, date, status, "Delete"});
+
+        }
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Error loading data: " + ex.getMessage(),
+                "Database Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+    //button
+    class ButtonRenderer extends JButton implements TableCellRenderer {
+
+    public ButtonRenderer() {
+        setOpaque(true);
+    }
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
+        setText((value == null) ? "Delete" : value.toString());
+        return this;
+    }
+}
+class ButtonEditor extends DefaultCellEditor {
+    private final JButton button;
+    private int editingRow = -1;
+    private JTable table;
+    private boolean clicked = false;
+
+    public ButtonEditor(JCheckBox checkBox) {
+        super(checkBox);
+        button = new JButton("Delete");
+        button.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        button.setBackground(Color.RED);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        
+        button.addActionListener(e -> {
+            SwingUtilities.invokeLater(() -> {
+                  clicked = true;
+                   fireEditingStopped();
+            });
         });
     }
+
+    @Override
+    public Component getTableCellEditorComponent (JTable table, Object value, boolean isSelected, int row, int column) {
+        this.table = table;
+        this.editingRow = row;
+        this.clicked = false;
+        button.setText(value == null ? "Delete" : value.toString());
+        return button;
+    }
+
+    @Override
+    public Object getCellEditorValue() {
+        if(!clicked) {
+            return null;
+        }
+        
+        int modelRow = table.convertRowIndexToModel(editingRow);
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        
+        if(modelRow < 0  || modelRow >= model.getRowCount()) {
+            clicked = false;
+            return null;
+        }
+        
+        Object idObject = model.getValueAt(modelRow, 0);
+        int id;
+        
+         try {
+            id = Integer.parseInt(String.valueOf(idObject));
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Invalid record id: " + idObject);
+            clicked = false;
+            return null;
+        }
+         
+       SwingUtilities.invokeLater(() -> {
+        if (table.isEditing()) {
+            table.getCellEditor().stopCellEditing();
+        }
+
+         int confirm = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to delete this record?",
+                "Confirm Delete",
+                JOptionPane.YES_NO_OPTION);
+         
+         if (confirm == JOptionPane.YES_OPTION) {
+    deleteFromDatabase(id);
+    loadServiceData(); // Refresh from DB
+    JOptionPane.showMessageDialog(null, "Record deleted successfully!");
+}
+
+        clicked = false;
+        editingRow = -1;
+       
+    });
+        return null;
+    }
+    @Override
+    public boolean stopCellEditing() {
+        clicked = false;
+        return super.stopCellEditing();
+    }
+
+   private void deleteFromDatabase(int id) {
+    String query = "DELETE FROM tbl_service WHERE service_id = ?";
+
+    try (Connection connect = DBConnect.getConnection();
+         PreparedStatement statement = connect.prepareStatement(query)) {
+
+        statement.setInt(1, id);
+
+        System.out.println("Deleting ID: " + id); // Debug
+        int affected = statement.executeUpdate();
+
+        if (affected > 0) {
+            System.out.println("Record deleted successfully!");
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "No record found with ID: " + id,
+                    "Delete Failed",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null,
+                "Error deleting record: " + e.getMessage(),
+                "Database Error",
+                JOptionPane.ERROR_MESSAGE);
+    }
+}
+}
+private void addDeleteButtonToTable() {
+    jTable1.getColumn("Action").setCellRenderer(new ButtonRenderer());
+    jTable1.getColumn("Action").setCellEditor(new ButtonEditor(new JCheckBox()));
+
+    jTable1.getColumn("Action").setMinWidth(40);
+    jTable1.getColumn("Action").setPreferredWidth(40);
+}
+    
 private void openPopupDialog() {
         // Create a modal dialog (blocks main frame until closed)
         
@@ -65,7 +249,8 @@ private void openPopupDialog() {
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(dialog, "Service Added Successfully!");
                 dialog.dispose();
-            }
+                loadServiceData(""); // <-- refresh the JTable immediately
+}
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(dialog, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -122,6 +307,7 @@ private void openPopupDialog() {
         dialog.setVisible(true);
     }
    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -143,6 +329,7 @@ private void openPopupDialog() {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
@@ -250,17 +437,17 @@ private void openPopupDialog() {
         });
         jPanel4.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 100, 270, 40));
 
-        jTable1.setBackground(new java.awt.Color(0, 102, 255));
+        jTable1.setBackground(new java.awt.Color(255, 255, 255));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Service Name", "Service Description", "Date", "Status", "Action"
+                "ID", "Service Name", "Service Description", "Date", "Status", "Action"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -316,6 +503,17 @@ private void openPopupDialog() {
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 250, 60));
 
+        jButton2.setBackground(new java.awt.Color(255, 51, 51));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("LOGOUT");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 690, 110, 40));
+
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("FEATURES");
@@ -365,6 +563,12 @@ private void openPopupDialog() {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String searchTerm = jTextField1.getText().trim();
+    if (searchTerm.isEmpty()) {
+        loadServiceData("");
+    } else {
+        loadServiceData(searchTerm);
+    }
+    System.out.println("Search Term: " + searchTerm);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -389,6 +593,25 @@ private void openPopupDialog() {
         new HelperClass(new AdminDashboardForm());
         this.dispose();
     }//GEN-LAST:event_jLabel17MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure you want to logout?",
+            "Logout Confirmation",
+            javax.swing.JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            // Close this window
+            this.dispose();
+
+            // Open the login form
+            LoginForm login = new LoginForm();
+            login.setVisible(true);
+
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -423,10 +646,12 @@ private void openPopupDialog() {
                 new ServicesForm().setVisible(true);
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;

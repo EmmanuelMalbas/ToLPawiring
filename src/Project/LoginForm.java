@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class LoginForm extends javax.swing.JFrame {
+     String uname;
+     String pass;
 
     public LoginForm() {
         initComponents();
@@ -200,8 +202,8 @@ public class LoginForm extends javax.swing.JFrame {
         PreparedStatement ps;
         ResultSet rs;
         
-        String pass = String.valueOf(passf.getPassword());
-        String uname = tf_user.getText();
+        pass = String.valueOf(passf.getPassword());
+        uname = tf_user.getText();
         
         String hashedPass = hashPassword(pass);
         
@@ -226,8 +228,14 @@ public class LoginForm extends javax.swing.JFrame {
         } 
         // ✅ If user is a regular user
         else if (role.equalsIgnoreCase("user")) {
-                new HelperClass(new CustomerLandingPage());
-                this.dispose();
+            int userId = rs.getInt("id");
+            String fullname = rs.getString("flname");
+            String email = rs.getString("email");
+            String username = rs.getString("username");
+            
+            CustomerReservation reservationForm = new CustomerReservation(userId, fullname, email, username);
+            reservationForm.setVisible(true);
+            this.dispose();
         } 
         // (Optional) Handle other roles
         else {
