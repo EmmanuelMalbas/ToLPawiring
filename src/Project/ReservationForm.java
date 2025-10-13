@@ -322,7 +322,7 @@ public class ReservationForm extends javax.swing.JFrame {
         JComboBox<String> txtServiceType = new JComboBox<>();
         JComboBox<String> txtCarModel = new JComboBox<>();
         JTextField txtEmail = new JTextField();
-        JComboBox<String> txtStatus = new JComboBox<>(new String[]{"Pending", "Confirmed", "Cancelled"});
+        JComboBox<String> txtStatus = new JComboBox<>(new String[]{"Pending", "Confirmed", "Cancelled", "Completed"});
 
         dialog.add(new JLabel("Full Name:"));
         dialog.add(txtName);
