@@ -305,8 +305,7 @@ public class ReservationForm extends javax.swing.JFrame {
 
     protected void fireEditingStopped() {
         super.fireEditingStopped();
-    }
-    
+    }   
 }
     //
     private void openEditDialog(int reservationId) {

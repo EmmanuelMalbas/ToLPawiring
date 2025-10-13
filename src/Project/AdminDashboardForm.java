@@ -95,7 +95,9 @@ public void dataCustomers() throws SQLException{
                 reservationModel.addRow(new Object[]{rs.getString("service_type")});
             }
             // RESERVATION
-            jPendingServices1.setModel(reservationModel);
+            int pendingCount = reservationModel.getRowCount();
+            jLabelPending.setText(String.valueOf(pendingCount));
+
         }
         
         String sqlCancelled = "SELECT service_type FROM tbl_reservation WHERE status = 'Cancelled'";
@@ -109,35 +111,43 @@ public void dataCustomers() throws SQLException{
                 cancelledModel.addRow(new Object[]{rs.getString("service_type")});
             }
             // CANCELLED
-            jPendingCancelled.setModel(cancelledModel);
+            int cancelledCount = cancelledModel.getRowCount();
+            jLabelCancelled.setText(String.valueOf(cancelledCount));
         }
         
         String sqlCompleted = "SELECT service_type FROM tbl_reservation WHERE status = 'Completed'";
         try (PreparedStatement stmt = conn.prepareStatement(sqlCompleted);
              ResultSet rs = stmt.executeQuery()) {
 
-            DefaultTableModel cancelledModel = new DefaultTableModel();
-            cancelledModel.addColumn("Completed");
+            DefaultTableModel CompletedModel = new DefaultTableModel();
+            CompletedModel.addColumn("Completed");
 
             while (rs.next()) {
-                cancelledModel.addRow(new Object[]{rs.getString("service_type")});
+                CompletedModel.addRow(new Object[]{rs.getString("service_type")});
             }
-            // CANCELLED
-            jPendingCompleted.setModel(cancelledModel);
+            // Completed
+            //jPendingCompleted.setModel(CompletedModel);
+            int ConfirmedCount = CompletedModel.getRowCount();
+            jLabelConfirmed.setText(String.valueOf(ConfirmedCount));
+
+            
         }
         
         String sqlConfirmed = "SELECT service_type FROM tbl_reservation WHERE status = 'Confirmed'";
         try (PreparedStatement stmt = conn.prepareStatement(sqlConfirmed);
              ResultSet rs = stmt.executeQuery()) {
 
-            DefaultTableModel cancelledModel = new DefaultTableModel();
-            cancelledModel.addColumn("Confirmed");
+            DefaultTableModel confirmedModel = new DefaultTableModel();
+            confirmedModel.addColumn("Confirmed");
 
             while (rs.next()) {
-                cancelledModel.addRow(new Object[]{rs.getString("service_type")});
+                confirmedModel.addRow(new Object[]{rs.getString("service_type")});
             }
             // Confirmed
-            jPendingConfirmed.setModel(cancelledModel);
+            //jPendingConfirmed.setModel(confirmedModel);
+            int confirmedCount = confirmedModel.getRowCount();
+            jLabelCompleted.setText(String.valueOf(confirmedCount));
+
         }
 
         
@@ -200,18 +210,15 @@ public void dataCustomers() throws SQLException{
         jPanel23 = new javax.swing.JPanel();
         jPanel24 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jPendingServices1 = new javax.swing.JTable();
+        jLabelPending = new javax.swing.JLabel();
         jPanel36 = new javax.swing.JPanel();
         jPanel35 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        jPendingConfirmed = new javax.swing.JTable();
+        jLabelCompleted = new javax.swing.JLabel();
         jPanel29 = new javax.swing.JPanel();
         jPanel30 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jPendingCancelled = new javax.swing.JTable();
+        jLabelCancelled = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jPanel37 = new javax.swing.JPanel();
@@ -230,8 +237,7 @@ public void dataCustomers() throws SQLException{
         jPanel43 = new javax.swing.JPanel();
         jPanel44 = new javax.swing.JPanel();
         jLabel32 = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jPendingCompleted = new javax.swing.JTable();
+        jLabelConfirmed = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Admin Dashboard");
@@ -544,7 +550,7 @@ public void dataCustomers() throws SQLException{
             .addGroup(jPanel24Layout.createSequentialGroup()
                 .addGap(88, 88, 88)
                 .addComponent(jLabel6)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
         jPanel24Layout.setVerticalGroup(
             jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -554,33 +560,26 @@ public void dataCustomers() throws SQLException{
                 .addContainerGap())
         );
 
-        jPendingServices1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane4.setViewportView(jPendingServices1);
-        jPendingServices1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jLabelPending.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabelPending.setText("Pending");
 
         javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
         jPanel23.setLayout(jPanel23Layout);
         jPanel23Layout.setHorizontalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel23Layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel23Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelPending)
+                .addGap(101, 101, 101))
         );
         jPanel23Layout.setVerticalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel23Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel23Layout.createSequentialGroup()
                 .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(jLabelPending)
+                .addGap(52, 52, 52))
         );
 
         jPanel4.add(jPanel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 280, -1));
@@ -610,30 +609,26 @@ public void dataCustomers() throws SQLException{
                 .addContainerGap())
         );
 
-        jPendingConfirmed.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane6.setViewportView(jPendingConfirmed);
-        jPendingConfirmed.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jLabelCompleted.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabelCompleted.setText("Confirmed");
 
         javax.swing.GroupLayout jPanel36Layout = new javax.swing.GroupLayout(jPanel36);
         jPanel36.setLayout(jPanel36Layout);
         jPanel36Layout.setHorizontalGroup(
             jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel35, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(jPanel36Layout.createSequentialGroup()
+                .addGap(89, 89, 89)
+                .addComponent(jLabelCompleted)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel36Layout.setVerticalGroup(
             jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel36Layout.createSequentialGroup()
                 .addComponent(jPanel35, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addComponent(jLabelCompleted)
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         jPanel4.add(jPanel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 350, 290, 150));
@@ -663,17 +658,8 @@ public void dataCustomers() throws SQLException{
                 .addContainerGap())
         );
 
-        jPendingCancelled.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jPendingCancelled.setColumnSelectionAllowed(true);
-        jScrollPane1.setViewportView(jPendingCancelled);
-        jPendingCancelled.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jLabelCancelled.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabelCancelled.setText("Cancelled");
 
         javax.swing.GroupLayout jPanel29Layout = new javax.swing.GroupLayout(jPanel29);
         jPanel29.setLayout(jPanel29Layout);
@@ -681,20 +667,20 @@ public void dataCustomers() throws SQLException{
             jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel30, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel29Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(89, 89, 89)
+                .addComponent(jLabelCancelled)
+                .addContainerGap(101, Short.MAX_VALUE))
         );
         jPanel29Layout.setVerticalGroup(
             jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel29Layout.createSequentialGroup()
                 .addComponent(jPanel30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addGap(36, 36, 36)
+                .addComponent(jLabelCancelled)
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
-        jPanel4.add(jPanel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 90, -1, -1));
+        jPanel4.add(jPanel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 90, 290, -1));
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(92, 93, 93));
@@ -897,30 +883,26 @@ public void dataCustomers() throws SQLException{
                 .addContainerGap())
         );
 
-        jPendingCompleted.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane5.setViewportView(jPendingCompleted);
-        jPendingCompleted.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jLabelConfirmed.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabelConfirmed.setText("Completed");
 
         javax.swing.GroupLayout jPanel43Layout = new javax.swing.GroupLayout(jPanel43);
         jPanel43.setLayout(jPanel43Layout);
         jPanel43Layout.setHorizontalGroup(
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel44, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel43Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelConfirmed)
+                .addGap(82, 82, 82))
         );
         jPanel43Layout.setVerticalGroup(
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel43Layout.createSequentialGroup()
                 .addComponent(jPanel44, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addComponent(jLabelConfirmed)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         jPanel4.add(jPanel43, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 350, 290, 150));
@@ -1037,6 +1019,10 @@ public void dataCustomers() throws SQLException{
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelCancelled;
+    private javax.swing.JLabel jLabelCompleted;
+    private javax.swing.JLabel jLabelConfirmed;
+    private javax.swing.JLabel jLabelPending;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
@@ -1065,16 +1051,8 @@ public void dataCustomers() throws SQLException{
     private javax.swing.JPanel jPanel52;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JTable jPendingCancelled;
-    private javax.swing.JTable jPendingCompleted;
-    private javax.swing.JTable jPendingConfirmed;
-    private javax.swing.JTable jPendingServices1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTable jServicesTable;
     private java.util.List<Project.TblUsers> tblUsersList;
     private java.util.List<Project.TblUsers> tblUsersList1;
