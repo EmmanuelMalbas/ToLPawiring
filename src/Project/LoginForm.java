@@ -233,8 +233,8 @@ public class LoginForm extends javax.swing.JFrame {
             String email = rs.getString("email");
             String username = rs.getString("username");
             
-            CustomerReservation reservationForm = new CustomerReservation(userId, fullname, email, username);
-            reservationForm.setVisible(true);
+            CustomerLandingPage clp = new CustomerLandingPage(userId, fullname, email, username);
+            clp.setVisible(true);
             this.dispose();
         } 
         // (Optional) Handle other roles

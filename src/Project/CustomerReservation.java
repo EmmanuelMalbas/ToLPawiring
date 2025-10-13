@@ -379,8 +379,12 @@ public class CustomerReservation extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-                new HelperClass(new CustomerReservationList());
+                //new HelperClass(new CustomerReservationList());
+                CustomerReservationList crl = new CustomerReservationList(userId, fullName, userEmail, userName);
+                crl.setVisible(true);
+
                 this.dispose();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

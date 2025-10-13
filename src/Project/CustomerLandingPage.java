@@ -12,16 +12,27 @@ import javax.swing.JFrame;
  * @author EJ
  */
 public class CustomerLandingPage extends javax.swing.JFrame {
-
+    private int userId = -1;
+    private String fullName = null;
+    private String userEmail = null;
+    private String userName = null;
+        
     /**
      * Creates new form CustomerLandingPage
      */
-    public CustomerLandingPage() {
+    public CustomerLandingPage(){
         initComponents();
-        this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(false);
     }
+    public CustomerLandingPage(int userId, String fullName, String userEmail, String userName) {
+        this.userId = userId;
+        this.fullName = fullName;
+        this.userEmail = userEmail;
+        this.userName = userName;
+        initComponents();
+    if (jLabel10 != null) {
+        jLabel10.setText("Welcome " + (userName == null ? "" : userName));
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -137,7 +148,9 @@ public class CustomerLandingPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new HelperClass(new CustomerReservation());
+        CustomerReservation cr = new CustomerReservation(userId, fullName, userEmail, userName);
+        cr.setVisible(true);
+                
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

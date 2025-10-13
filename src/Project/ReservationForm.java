@@ -21,6 +21,7 @@ import java.awt.event.MouseListener;
 import javax.swing.*;
 import javax.swing.table.*;
 import Project.LoginForm;
+import java.awt.GridLayout;
 
 
 public class ReservationForm extends javax.swing.JFrame {
@@ -29,22 +30,30 @@ public class ReservationForm extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
+        jTable1.setRowHeight(35);
+
+        // Set renderers and editors once
+        jTable1.getColumn("Edit").setCellRenderer(new ButtonRenderer());
+        jTable1.getColumn("Delete").setCellRenderer(new ButtonRenderer());
+        jTable1.getColumn("Edit").setCellEditor(new ButtonEditor(jTable1));
+        jTable1.getColumn("Delete").setCellEditor(new ButtonEditor(jTable1));
+
+        jTable1.getColumn("Edit").setPreferredWidth(120);
+        jTable1.getColumn("Delete").setPreferredWidth(120);
+
+        // Initialize the button actions once
+        addButtonToTable();
+
+        // Load data
         loadReservations(null);
-        
-         jTable1.setRowHeight(35);
-         
-         jTable1.getColumn("Edit").setCellRenderer(new ButtonRenderer());
-         jTable1.getColumn("Delete").setCellEditor(new ButtonEditor(jTable1));
-         jTable1.getColumn("Edit").setPreferredWidth(120);
-         jTable1.getColumn("Delete").setPreferredWidth(120);
-    }
+}
     
     public void loadReservations(String searchTerm) {
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
     model.setRowCount(0); // Clear existing data
 
-    String query = "SELECT id, flname, service_type, car_model, schedule, email, date_place, status FROM tbl_reservation";
+    String query = "SELECT reservation_id, flname, service_type, car_model, schedule, email, date_place, status FROM tbl_reservation";
 
     if (searchTerm != null && !searchTerm.isEmpty()) {
         query += " WHERE flname LIKE ? OR service_type LIKE ? OR car_model LIKE ?";
@@ -64,7 +73,7 @@ public class ReservationForm extends javax.swing.JFrame {
 
         while (rs.next()) {
             Object[] row = {
-                rs.getInt("id"),
+                rs.getInt("reservation_id"),
                 rs.getString("flname"),
                 rs.getString("service_type"),
                 rs.getString("car_model"),
@@ -81,9 +90,12 @@ public class ReservationForm extends javax.swing.JFrame {
     } catch (SQLException e) {
         e.printStackTrace();
     }
+    
+    jTable1.revalidate();
+    jTable1.repaint();
 
     // Add button functionality
-    addButtonToTable();
+    //addButtonToTable();
 }
     
     public class ButtonColumn extends AbstractCellEditor
@@ -164,7 +176,7 @@ public class ReservationForm extends javax.swing.JFrame {
 }
     
     private void addButtonToTable() {
-    Action editAction = new AbstractAction("Edit") {
+    /*Action editAction = new AbstractAction("Edit") {
         public void actionPerformed(ActionEvent e) {
             int row = jTable1.getSelectedRow();
             if (row >= 0) {
@@ -173,24 +185,35 @@ public class ReservationForm extends javax.swing.JFrame {
                 // TODO: add your edit logic or open edit form here
             }
         }
-    };
+    };*/
+    Action editAction = new AbstractAction("Edit") {
+    public void actionPerformed(ActionEvent e) {
+        int row = jTable1.getSelectedRow();
+        if (row >= 0) {
+            int id = (int) jTable1.getValueAt(row, 0);
+            openEditDialog(id); // Call the method we added
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a row first!");
+        }
+    }
+};
 
     Action deleteAction = new AbstractAction("Delete") {
         public void actionPerformed(ActionEvent e) {
             int row = jTable1.getSelectedRow();
             if (row >= 0) {
-                int id = (int) jTable1.getValueAt(row, 0);
+                int reservation_id = (int) jTable1.getValueAt(row, 0);
                 int confirm = JOptionPane.showConfirmDialog(
                     null,
-                    "Are you sure you want to delete reservation ID: " + id + "?",
+                    "Are you sure you want to delete reservation ID: " + reservation_id + "?",
                     "Confirm Delete",
                     JOptionPane.YES_NO_OPTION
                 );
 
                 if (confirm == JOptionPane.YES_OPTION) {
                     try (Connection conn = DBConnect.getConnection();
-                         PreparedStatement pst = conn.prepareStatement("DELETE FROM tbl_reservation WHERE id = ?")) {
-                        pst.setInt(1, id);
+                         PreparedStatement pst = conn.prepareStatement("DELETE FROM tbl_reservation WHERE _reservation_id = ?")) {
+                        pst.setInt(1, reservation_id);
                         int affected = pst.executeUpdate();
 
                         if (affected > 0) {
@@ -212,9 +235,6 @@ public class ReservationForm extends javax.swing.JFrame {
     new ButtonColumn(jTable1, editAction, 8);
     new ButtonColumn(jTable1, deleteAction, 9);
 }
-
-
-
 
     class ButtonRenderer extends JButton implements TableCellRenderer {
     public ButtonRenderer() {
@@ -286,8 +306,120 @@ public class ReservationForm extends javax.swing.JFrame {
     protected void fireEditingStopped() {
         super.fireEditingStopped();
     }
+    
 }
+    //
+    private void openEditDialog(int reservationId) {
+        JDialog dialog = new JDialog(this, "Edit Reservation", true);
+        dialog.setSize(400, 350);
+        dialog.setLayout(new GridLayout(7, 2, 10, 10)); // <-- 10px horizontal and vertical gaps
+        dialog.getRootPane().setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20)); // adds margin
+        dialog.setLocationRelativeTo(this);
 
+        // Create fields
+        JTextField txtName = new JTextField();
+        //JTextField txtServiceType = new JTextField();
+        JComboBox<String> txtServiceType = new JComboBox<>();
+        JComboBox<String> txtCarModel = new JComboBox<>();
+        JTextField txtEmail = new JTextField();
+        JComboBox<String> txtStatus = new JComboBox<>(new String[]{"Pending", "Confirmed", "Cancelled"});
+
+        dialog.add(new JLabel("Full Name:"));
+        dialog.add(txtName);
+        dialog.add(new JLabel("Service Type:"));
+        dialog.add(txtServiceType);
+        dialog.add(new JLabel("Car Model:"));
+        dialog.add(txtCarModel);
+        dialog.add(new JLabel("Email:"));
+        dialog.add(txtEmail);
+        dialog.add(new JLabel("Status:"));
+        dialog.add(txtStatus);
+
+        JButton btnSave = new JButton("Save");
+        JButton btnCancel = new JButton("Cancel");
+        dialog.add(btnSave);
+        dialog.add(btnCancel);
+
+        //Service Type Try-Catch
+        try (Connection conn = DBConnect.getConnection();
+            PreparedStatement pst = conn.prepareStatement("SELECT service_name FROM tbl_service WHERE status = 'Active'")) {
+            ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            txtServiceType.addItem(rs.getString("service_name"));
+        }
+        } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error loading services: " + e.getMessage());
+    }
+        //Car Model Try-Catch
+        try (Connection conn = DBConnect.getConnection();
+            PreparedStatement pst = conn.prepareStatement("SELECT car_model FROM tbl_car_model WHERE status = 'AVAILABLE'")) {
+            ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            txtCarModel.addItem(rs.getString("car_model"));
+        }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error loading services: " + e.getMessage());
+        }
+    // Load data from DB
+    String currentService = null;
+    String carModel = null;
+    try (Connection conn = DBConnect.getConnection();
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM tbl_reservation WHERE reservation_id = ?")) {
+        pst.setInt(1, reservationId);
+        ResultSet rs = pst.executeQuery();
+        
+        
+        if (rs.next()) {
+            txtName.setText(rs.getString("flname"));
+            currentService = rs.getString("service_type");
+            carModel = rs.getString("car_model");
+            txtEmail.setText(rs.getString("email"));
+            
+            //String currentStatus = rs.getString("status");
+            //txtStatus.setSelectedItem(currentStatus != null ? currentStatus : "Pending");
+            // Set current status in dropdown
+            String currentStatus = rs.getString("status");
+            if (currentStatus != null) {
+                txtStatus.setSelectedItem(currentStatus);
+            } else {
+                txtStatus.setSelectedIndex(0);
+            }
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error loading reservation: " + e.getMessage());
+        return;
+    }
+
+    // Button Actions
+    btnSave.addActionListener(evt -> {
+        try (Connection conn = DBConnect.getConnection();
+             PreparedStatement pst = conn.prepareStatement(
+                 "UPDATE tbl_reservation SET flname=?, service_type=?, car_model=?, email=?, status=? WHERE reservation_id=?")) {
+
+            pst.setString(1, txtName.getText());
+            pst.setString(2, txtServiceType.getSelectedItem().toString());
+            pst.setString(3, txtCarModel.getSelectedItem().toString());
+            pst.setString(4, txtEmail.getText());
+            pst.setString(5, txtStatus.getSelectedItem().toString());
+            pst.setInt(6, reservationId);
+
+            int updated = pst.executeUpdate();
+            if (updated > 0) {
+                JOptionPane.showMessageDialog(dialog, "Reservation updated successfully!");
+                dialog.dispose();
+                loadReservations(null); // Refresh your table after update
+            } else {
+                JOptionPane.showMessageDialog(dialog, "Update failed!");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(dialog, "Database error: " + ex.getMessage());
+        }
+    });
+
+    btnCancel.addActionListener(evt -> dialog.dispose());
+
+    dialog.setVisible(true);
+}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -412,7 +544,7 @@ public class ReservationForm extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Name", "Service Type", "Car Model", "Schedule", "Email Address", "Date Placed", "Status", "Edit", "Delete"
+                "Reservation ID", "Name", "Service Type", "Car Model", "Schedule", "Email Address", "Date Placed", "Status", "Edit", "Delete"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -533,7 +665,7 @@ public class ReservationForm extends javax.swing.JFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String searchTerm = jTextField1.getText().trim();
-    loadReservations(searchTerm); // Actually perform the search
+        loadReservations(searchTerm); // Actually perform the search
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed

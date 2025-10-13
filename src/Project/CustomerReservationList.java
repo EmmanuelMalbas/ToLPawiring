@@ -40,9 +40,15 @@ public class CustomerReservationList extends javax.swing.JFrame {
         loadServices();
     }
         public void loadServices() {
+            if (userId == -1) {
+        JOptionPane.showMessageDialog(null, "User not logged in.");
+        return;
+    }
     try (Connection conn = DBConnect.getConnection()) {
-        String sql = "SELECT flname, service_type, car_model, schedule, email, date_place, status FROM tbl_reservation";
+        String sql = "SELECT flname, service_type, car_model, schedule, email, date_place, status " +
+                     "FROM tbl_reservation WHERE id = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setInt(1, userId); // filter by the logged-in user's ID
         ResultSet rs = stmt.executeQuery();
 
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -209,7 +215,9 @@ public class CustomerReservationList extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1FocusGained
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-                new HelperClass(new CustomerReservation());
+                CustomerReservation cr = new CustomerReservation(userId, fullName, userEmail, userName);
+                cr.setVisible(true);
+                
                 this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
